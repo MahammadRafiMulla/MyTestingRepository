@@ -66,7 +66,20 @@ public void UpdateEmployeeTest() {
 	Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("moula@gmail.com");
 }
 
+@Test
+@Order(5)
+@Rollback(value=false)
+public void deleteEmployeeTest() {
+	Employee employee=employeeRepository.findById(1L).get();
+	employeeRepository.delete(employee);
+	Employee employee1=null;
+	
+	Optional<Employee> optionalEmployee=employeeRepository.findByEmail("moula@gmail.com");
+	if(optionalEmployee.isPresent()) {
+		employee1=optionalEmployee.get();
+		}
 
-
+		Assertions.assertThat(employee1).isNull();
+}
 
 }
